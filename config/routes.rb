@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  get "players/index"
+  get "players/show"
+  get "teams/index"
+  get "teams/show"
+  get "leagues/index"
+  get "leagues/show"
   get "pages/about"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
