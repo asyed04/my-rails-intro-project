@@ -40,15 +40,20 @@ League.all.each do |league|
 end
 
 puts "⚽ Seeding Players from API and Faker..."
-
-# Fetch real players from API
-url = URI("https://www.thesportsdb.com/api/v1/json/3/searchplayers.php?t=Barcelona")
-response = Net::HTTP.get(url)
-players_data = JSON.parse(response)["player"]
+Faker::UniqueGenerator.clear  # Ensures unique names across teams
 
 Team.all.each do |team|
-  # Assign 5 real players from API (if available)
-  players_data.first(5).each do |player|
+  puts "Seeding players for #{team.name}..."
+
+  # Fetch 5 unique players from API
+  assigned_api_players = []
+  url = URI("https://www.thesportsdb.com/api/v1/json/3/searchplayers.php?t=Barcelona")
+  response = Net::HTTP.get(url)
+  players_data = JSON.parse(response)["player"]
+
+  players_data.each do |player|
+    next if assigned_api_players.include?(player["strPlayer"]) # Prevent duplicate API players
+
     Player.create!(
       name: player["strPlayer"],
       age: rand(18..40),
@@ -57,12 +62,17 @@ Team.all.each do |team|
       goals_scored: rand(0..50),
       teams: [team]
     )
+    assigned_api_players << player["strPlayer"]
+    break if assigned_api_players.length >= 5 # Stop at 5 players
   end
 
-  # Assign 6 Faker-generated players to reach 11 per team
-  (11 - team.players.count).times do
+  # Assign Faker players to reach 11 per team
+  (11 - team.players.count).times do |i|
+    player_name = Faker::Sports::Football.unique.player
+    puts "Assigning Faker Player ##{i+1} (#{player_name}) to #{team.name}..."
+
     Player.create!(
-      name: Faker::Sports::Football.player,
+      name: player_name,
       age: rand(18..40),
       position: ["Forward", "Midfielder", "Defender", "Goalkeeper"].sample,
       nationality: Faker::Nation.nationality,
@@ -70,7 +80,12 @@ Team.all.each do |team|
       teams: [team]
     )
   end
+  puts "✅ Players seeded for #{team.name}!"
 end
+
+puts "✅ All teams now have 11 players!"
+
+
 
 
 puts "🔄 Seeding Player Transfers..."

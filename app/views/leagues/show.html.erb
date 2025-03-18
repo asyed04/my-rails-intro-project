@@ -1,11 +1,17 @@
-<h1>Leagues#show</h1>
-<p>Find me in app/views/leagues/show.html.erb</p>
 <h1><%= @league.name %></h1>
-<p>Country: <%= @league.country %></p>
-<p>Number of Teams: <%= @league.num_teams %></p>
+<p><strong>Country:</strong> <%= @league.country %></p>
+<p><strong>Number of Teams:</strong> <%= @league.teams.count %></p> <!-- Fix: Uses actual count -->
+
 <h2>Teams in this League</h2>
-<ul>
-  <% @league.teams.each do |team| %>
-    <li><a href="<%= team_path(team) %>"><%= team.name %></a></li>
-  <% end %>
-</ul>
+<% if @league.teams.any? %>
+  <ul>
+    <% @league.teams.each do |team| %>
+      <li><a href="<%= team_path(team) %>"><%= team.name %></a></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No teams available in this league.</p>
+<% end %>
+
+<hr>
+<a href="<%= leagues_path %>" class="btn btn-primary">⬅ Back to Leagues</a>

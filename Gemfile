@@ -65,3 +65,5 @@ end
 gem "faker", "~> 3.5"
 
 gem 'csv'
+
+gem "kaminari", "~> 1.2"

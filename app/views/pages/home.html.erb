@@ -1,0 +1,16 @@
+<h1>Welcome to the Football Stats App ⚽</h1>
+<p>Explore and analyze football leagues, teams, and players from around the world.</p>
+
+<h2>Quick Stats 📊</h2>
+<ul>
+  <li><strong>Total Leagues:</strong> <%= League.count %></li>
+  <li><strong>Total Teams:</strong> <%= Team.count %></li>
+  <li><strong>Total Players:</strong> <%= Player.count %></li>
+</ul>
+
+<h2>Explore</h2>
+<ul>
+  <li><a href="<%= leagues_path %>">View All Leagues</a></li>
+  <li><a href="<%= teams_path %>">View All Teams</a></li>
+  <li><a href="<%= players_path %>">View All Players</a></li>
+</ul>

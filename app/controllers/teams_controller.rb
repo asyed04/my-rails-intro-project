@@ -1,6 +1,6 @@
 class TeamsController < ApplicationController
   def index
-    @teams = Team.all
+    @teams = Team.page(params[:page]).per(10) # Show 10 teams per page
   end
 
   def show

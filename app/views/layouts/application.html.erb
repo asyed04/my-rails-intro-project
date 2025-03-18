@@ -10,28 +10,26 @@
 
     <%= yield :head %>
 
-    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
     <link rel="icon" href="/icon.png" type="image/png">
     <link rel="icon" href="/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/icon.png">
 
-    <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
-    <%= yield %>
     <nav>
-  <a href="/">Home</a> |
-  <a href="/about">About</a> |
-  <a href="/leagues">Leagues</a> |
-  <a href="/teams">Teams</a> |
-  <a href="/players">Players</a>
-</nav>
-<hr>
+      <ul>
+        <li class="<%= 'active' if current_page?(root_path) %>"><a href="<%= root_path %>">Home</a></li>
+        <li class="<%= 'active' if current_page?(about_path) %>"><a href="<%= about_path %>">About</a></li>
+        <li class="<%= 'active' if current_page?(leagues_path) %>"><a href="<%= leagues_path %>">Leagues</a></li>
+        <li class="<%= 'active' if current_page?(teams_path) %>"><a href="<%= teams_path %>">Teams</a></li>
+        <li class="<%= 'active' if current_page?(players_path) %>"><a href="<%= players_path %>">Players</a></li>
+      </ul>
+    </nav>
+    <hr>
 
+    <%= yield %>
   </body>
 </html>
