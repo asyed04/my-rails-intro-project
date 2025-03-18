@@ -1,11 +1,18 @@
-<h1>Teams#show</h1>
-<p>Find me in app/views/teams/show.html.erb</p>
 <h1><%= @team.name %></h1>
-<p>Country: <%= @team.country %></p>
-<p>Founded: <%= @team.founded_year %></p>
+<p><strong>Country:</strong> <%= @team.country %></p>
+<p><strong>Founded:</strong> <%= @team.founded_year %></p>
+<p><strong>League:</strong> <a href="<%= league_path(@team.league) %>"><%= @team.league.name %></a></p>
+
 <h2>Players in this Team</h2>
-<ul>
-  <% @team.players.each do |player| %>
-    <li><a href="<%= player_path(player) %>"><%= player.name %> - <%= player.position %></a></li>
-  <% end %>
-</ul>
+<% if @team.players.any? %>
+  <ul>
+    <% @team.players.each do |player| %>
+      <li><a href="<%= player_path(player) %>"><%= player.name %> - <%= player.position %></a></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>No players available in this team.</p>
+<% end %>
+
+<hr>
+<a href="<%= teams_path %>" class="btn btn-primary">⬅ Back to Teams</a>
