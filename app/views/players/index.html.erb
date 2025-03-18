@@ -1,6 +1,20 @@
-<h1>Players#index</h1>
-<p>Find me in app/views/players/index.html.erb</p>
 <h1>Football Players</h1>
+
+<!-- Search Form -->
+<form method="get">
+  <input type="text" name="search" placeholder="Search players..." value="<%= params[:search] %>">
+  
+  <select name="position">
+    <option value="">All Positions</option>
+    <option value="Forward">Forward</option>
+    <option value="Midfielder">Midfielder</option>
+    <option value="Defender">Defender</option>
+    <option value="Goalkeeper">Goalkeeper</option>
+  </select>
+
+  <button type="submit">Search</button>
+</form>
+
 <ul>
   <% @players.each do |player| %>
     <li><a href="<%= player_path(player) %>"><%= player.name %> - <%= player.position %></a></li>
