@@ -39,22 +39,39 @@ League.all.each do |league|
   end
 end
 
-puts "⚽ Seeding Players from API..."
+puts "⚽ Seeding Players from API and Faker..."
+
+# Fetch real players from API
 url = URI("https://www.thesportsdb.com/api/v1/json/3/searchplayers.php?t=Barcelona")
 response = Net::HTTP.get(url)
 players_data = JSON.parse(response)["player"]
 
-players_data.first(10).each do |player|
-  team = Team.order("RANDOM()").first
-  Player.create!(
-    name: player["strPlayer"],
-    age: rand(18..40),
-    position: player["strPosition"] || "Midfielder",
-    nationality: player["strNationality"] || "Unknown",
-    goals_scored: rand(0..50),
-    teams: [team]
-  )
+Team.all.each do |team|
+  # Assign 5 real players from API (if available)
+  players_data.first(5).each do |player|
+    Player.create!(
+      name: player["strPlayer"],
+      age: rand(18..40),
+      position: player["strPosition"] || "Midfielder",
+      nationality: player["strNationality"] || "Unknown",
+      goals_scored: rand(0..50),
+      teams: [team]
+    )
+  end
+
+  # Assign 6 Faker-generated players to reach 11 per team
+  (11 - team.players.count).times do
+    Player.create!(
+      name: Faker::Sports::Football.player,
+      age: rand(18..40),
+      position: ["Forward", "Midfielder", "Defender", "Goalkeeper"].sample,
+      nationality: Faker::Nation.nationality,
+      goals_scored: rand(0..50),
+      teams: [team]
+    )
+  end
 end
+
 
 puts "🔄 Seeding Player Transfers..."
 10.times do
