@@ -19,4 +19,12 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
   get "/about", to: "pages#about"
+  
+  Rails.application.routes.draw do
+    root "leagues#index"  # Homepage lists leagues
+    resources :leagues, only: [:index, :show]
+    resources :teams, only: [:index, :show]
+    resources :players, only: [:index, :show]
+  end
+  
 end
