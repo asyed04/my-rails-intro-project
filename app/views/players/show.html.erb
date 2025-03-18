@@ -1,2 +1,13 @@
 <h1>Players#show</h1>
 <p>Find me in app/views/players/show.html.erb</p>
+<h1><%= @player.name %></h1>
+<p>Age: <%= @player.age %></p>
+<p>Position: <%= @player.position %></p>
+<p>Nationality: <%= @player.nationality %></p>
+<p>Goals Scored: <%= @player.goals_scored %></p>
+<h2>Teams Played For</h2>
+<ul>
+  <% @player.teams.each do |team| %>
+    <li><a href="<%= team_path(team) %>"><%= team.name %></a></li>
+  <% end %>
+</ul>

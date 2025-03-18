@@ -1,2 +1,11 @@
 <h1>Leagues#show</h1>
 <p>Find me in app/views/leagues/show.html.erb</p>
+<h1><%= @league.name %></h1>
+<p>Country: <%= @league.country %></p>
+<p>Number of Teams: <%= @league.num_teams %></p>
+<h2>Teams in this League</h2>
+<ul>
+  <% @league.teams.each do |team| %>
+    <li><a href="<%= team_path(team) %>"><%= team.name %></a></li>
+  <% end %>
+</ul>
