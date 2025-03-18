@@ -2,7 +2,7 @@
 
 <% if @teams.any? %>
   <ul>
-    <% @teams.each do |team| %>
+<% @teams.uniq.each do |team| %>
       <li>
         <a href="<%= team_path(team) %>"><%= team.name %> - <%= team.country %></a> 
         (<a href="<%= league_path(team.league) %>"><%= team.league.name %></a>)
@@ -13,7 +13,7 @@
     <!-- Pagination Controls -->
   <%= paginate @teams %>
 
-  
+
 <% else %>
   <p>No teams available.</p>
 <% end %>

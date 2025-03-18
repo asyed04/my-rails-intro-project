@@ -18,6 +18,8 @@ Player.destroy_all
 Team.destroy_all
 League.destroy_all
 
+Faker::UniqueGenerator.clear  # Reset unique tracking before generating data
+
 puts "🌍 Seeding Leagues from CSV..."
 CSV.foreach(Rails.root.join('db/leagues.csv'), headers: true) do |row|
   League.create!(
@@ -30,29 +32,37 @@ end
 puts "🏆 Seeding Teams with Faker..."
 League.all.each do |league|
   5.times do
-    Team.create!(
-      name: Faker::Sports::Football.team,
-      league: league,
-      country: league.country,
-      founded_year: rand(1900..2020)
-    )
+    begin
+      Team.create!(
+        name: Faker::Sports::Football.team,
+        league: league,
+        country: league.country,
+        founded_year: rand(1900..2020)
+      )
+    rescue Faker::UniqueGenerator::RetryLimitExceeded
+      puts "⚠️ Faker ran out of unique team names, using fallback name."
+      Team.create!(
+        name: "Generated Team #{rand(1000..9999)}",
+        league: league,
+        country: league.country,
+        founded_year: rand(1900..2020)
+      )
+    end
   end
 end
 
 puts "⚽ Seeding Players from API and Faker..."
-Faker::UniqueGenerator.clear  # Ensures unique names across teams
-
 Team.all.each do |team|
   puts "Seeding players for #{team.name}..."
 
-  # Fetch 5 unique players from API
+  # Assign real players from API
   assigned_api_players = []
   url = URI("https://www.thesportsdb.com/api/v1/json/3/searchplayers.php?t=Barcelona")
   response = Net::HTTP.get(url)
   players_data = JSON.parse(response)["player"]
 
   players_data.each do |player|
-    next if assigned_api_players.include?(player["strPlayer"]) # Prevent duplicate API players
+    next if assigned_api_players.include?(player["strPlayer"])
 
     Player.create!(
       name: player["strPlayer"],
@@ -63,30 +73,40 @@ Team.all.each do |team|
       teams: [team]
     )
     assigned_api_players << player["strPlayer"]
-    break if assigned_api_players.length >= 5 # Stop at 5 players
+    break if assigned_api_players.length >= 5
   end
 
-  # Assign Faker players to reach 11 per team
-  (11 - team.players.count).times do |i|
-    player_name = Faker::Sports::Football.unique.player
-    puts "Assigning Faker Player ##{i+1} (#{player_name}) to #{team.name}..."
+  # Ensure 11 players per team
+  while team.players.count < 11
+    begin
+      player_name = Faker::Sports::Football.unique.player
+      puts "Assigning Faker Player #{player_name} to #{team.name}..."
 
-    Player.create!(
-      name: player_name,
-      age: rand(18..40),
-      position: ["Forward", "Midfielder", "Defender", "Goalkeeper"].sample,
-      nationality: Faker::Nation.nationality,
-      goals_scored: rand(0..50),
-      teams: [team]
-    )
+      Player.create!(
+        name: player_name,
+        age: rand(18..40),
+        position: ["Forward", "Midfielder", "Defender", "Goalkeeper"].sample,
+        nationality: Faker::Nation.nationality,
+        goals_scored: rand(0..50),
+        teams: [team]
+      )
+    rescue Faker::UniqueGenerator::RetryLimitExceeded
+      puts "⚠️ Faker ran out of unique player names, using fallback."
+      Player.create!(
+        name: "Generated Player #{rand(1000..9999)}",
+        age: rand(18..40),
+        position: ["Forward", "Midfielder", "Defender", "Goalkeeper"].sample,
+        nationality: "Unknown",
+        goals_scored: rand(0..50),
+        teams: [team]
+      )
+    end
   end
+
   puts "✅ Players seeded for #{team.name}!"
 end
 
 puts "✅ All teams now have 11 players!"
-
-
-
 
 puts "🔄 Seeding Player Transfers..."
 10.times do
