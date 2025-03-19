@@ -1,11 +1,20 @@
-<h1><%= @player.name %></h1>
-<p>Age: <%= @player.age %></p>
-<p>Position: <%= @player.position %></p>
-<p>Nationality: <%= @player.nationality %></p>
-<p>Goals Scored: <%= @player.goals_scored %></p>
-<h2>Teams Played For</h2>
-<ul>
-  <% @player.teams.each do |team| %>
-    <li><a href="<%= team_path(team) %>"><%= team.name %></a></li>
-  <% end %>
-</ul>
+<div class="container">
+  <div class="card shadow-lg mt-5">
+    <div class="card-body">
+      <h1 class="card-title text-center"><%= @player.name %></h1>
+      <p class="text-center text-muted">Position: <%= @player.position %></p>
+      <hr>
+      <p><strong>Age:</strong> <%= @player.age %></p>
+      <p><strong>Nationality:</strong> <%= @player.nationality %></p>
+      <p><strong>Goals Scored:</strong> <%= @player.goals_scored %></p>
+      <p><strong>Current Teams:</strong> 
+        <% @player.teams.each do |team| %>
+          <%= link_to team.name, team_path(team), class: "badge bg-primary text-decoration-none" %> 
+        <% end %>
+      </p>
+      <div class="text-center mt-4">
+        <%= link_to "Back to Players", players_path, class: "btn btn-secondary" %>
+      </div>
+    </div>
+  </div>
+</div>

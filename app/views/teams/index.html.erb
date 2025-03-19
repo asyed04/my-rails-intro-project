@@ -1,22 +1,14 @@
-<h1>Football Teams</h1>
-
-<% if @teams.any? %>
-  <ul>
-<% @teams.uniq.each do |team| %>
-      <li>
-        <a href="<%= team_path(team) %>"><%= team.name %> - <%= team.country %></a> 
-        (<a href="<%= league_path(team.league) %>"><%= team.league.name %></a>)
-      </li>
-    <% end %>
-  </ul>
-
-    <!-- Pagination Controls -->
-  <%= paginate @teams %>
-
-
-<% else %>
-  <p>No teams available.</p>
-<% end %>
-
-<hr>
-<a href="<%= leagues_path %>" class="btn btn-primary">⬅ Back to Leagues</a>
+<h1 class="text-center my-4">Football Teams</h1>
+<div class="row">
+  <% @teams.each do |team| %>
+    <div class="col-md-4">
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title"><%= link_to team.name, team_path(team) %></h5>
+          <p class="card-text"><strong>Country:</strong> <%= team.country %></p>
+          <p class="card-text"><strong>Founded:</strong> <%= team.founded_year %></p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

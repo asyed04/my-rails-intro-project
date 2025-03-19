@@ -1,4 +1,4 @@
-source "https://rubygems.org"
+xsource "https://rubygems.org"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.0.1"
@@ -63,13 +63,3 @@ group :test do
 end
 
 gem "faker", "~> 3.5"
-
-gem 'csv'
-
-gem "kaminari", "~> 1.2"
-
-gem "bootstrap", "~> 5.3"
-
-gem "sassc-rails", "~> 2.1"
-
-gem "cssbundling-rails", "~> 1.4"

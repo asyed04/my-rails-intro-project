@@ -1,8 +1,19 @@
-<h1>Football Leagues</h1>
-<ul>
-  <% @leagues.each do |league| %>
-    <li>
-      <a href="<%= league_path(league) %>"><%= league.name %> - <%= league.country %></a>
-    </li>
-  <% end %>
-</ul>
+<h1 class="text-center my-4">Football Leagues</h1>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Country</th>
+      <th>Teams</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @leagues.each do |league| %>
+      <tr>
+        <td><a href="<%= league_path(league) %>"><%= league.name %></a></td>
+        <td><%= league.country %></td>
+        <td><%= league.num_teams %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

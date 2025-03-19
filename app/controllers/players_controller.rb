@@ -11,15 +11,16 @@ class PlayersController < ApplicationController
     if params[:position].present?
       @players = @players.where(position: params[:position])
     end
+
+    # ✅ Add Kaminari pagination (shows 10 players per page)
+    @players = @players.page(params[:page]).per(10)
   end
 
-  # Fix for "undefined method 'name' for nil"
   def show
     @player = Player.find_by(id: params[:id])
-
     if @player.nil?
       flash[:alert] = "Player not found!"
-      redirect_to players_path  # Redirect to players list if not found
+      redirect_to players_path
     end
   end
 end

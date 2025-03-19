@@ -1,22 +1,46 @@
-<h1>Football Players</h1>
+<h1 class="text-center my-4">Football Players</h1>
 
 <!-- Search Form -->
-<form method="get">
-  <input type="text" name="search" placeholder="Search players..." value="<%= params[:search] %>">
-  
-  <select name="position">
-    <option value="">All Positions</option>
-    <option value="Forward">Forward</option>
-    <option value="Midfielder">Midfielder</option>
-    <option value="Defender">Defender</option>
-    <option value="Goalkeeper">Goalkeeper</option>
-  </select>
+<div class="container">
+  <%= form_with url: players_path, method: :get, local: true do |form| %>  <!-- ✅ Correct form wrapper -->
 
-  <button type="submit">Search</button>
-</form>
+    <div class="row">
+      <div class="col-md-6">
+        <%= form.label :search, "Search by Player Name:", class: "form-label" %>
+        <%= form.text_field :search, value: params[:search], class: "form-control", placeholder: "Enter player name..." %>
+      </div>
 
-<ul>
+      <div class="col-md-4">
+        <%= form.label :position, "Filter by Position:", class: "form-label" %>
+        <%= form.select :position, Player.distinct.pluck(:position), { include_blank: "All Positions" }, class: "form-select" %>
+      </div>
+
+      <div class="col-md-2 d-flex align-items-end">
+        <%= form.submit "Search", class: "btn btn-primary w-100" %>
+      </div>
+    </div>
+
+  <% end %>  <!-- ✅ Correct closing end for form_with -->
+</div>
+
+
+<!-- Player Cards -->
+<div class="row">
   <% @players.each do |player| %>
-    <li><a href="<%= player_path(player) %>"><%= player.name %> - <%= player.position %></a></li>
+    <div class="col-md-4">
+      <div class="card mb-3 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title"><%= link_to player.name, player_path(player) %></h5>
+          <p class="card-text"><strong>Position:</strong> <%= player.position %></p>
+          <p class="card-text"><strong>Nationality:</strong> <%= player.nationality %></p>
+          <p class="card-text"><strong>Goals Scored:</strong> <%= player.goals_scored %></p>
+        </div>
+      </div>
+    </div>
   <% end %>
-</ul>
+</div>
+
+<!-- Pagination -->
+<div class="d-flex justify-content-center mt-4">
+  <%= paginate @players %>
+</div>
