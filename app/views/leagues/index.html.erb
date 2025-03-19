@@ -1,4 +1,54 @@
 <h1 class="text-center my-4">Football Leagues</h1>
+
+<!-- 📍 Map Container -->
+<div id="map" style="height: 500px; width: 100%;" class="mb-4"></div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    console.log("✅ JavaScript is running!");
+    
+    var map = L.map('map').setView([48.8566, 2.3522], 4);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    console.log("✅ Map initialized!");
+
+    var leagues = <%= raw League.all.to_json(only: [:name, :latitude, :longitude]) %>;
+
+    console.log("✅ Leagues JSON String:", '<%= raw League.all.to_json(only: [:name, :latitude, :longitude]) %>');
+    console.log("✅ Parsed Leagues Data:", leagues);
+    
+    leagues.forEach(function(league) {
+       if (league.latitude && league.longitude) {
+         let lat = parseFloat(league.latitude);
+         let lng = parseFloat(league.longitude);
+    
+         if (!isNaN(lat) && !isNaN(lng)) {
+           console.log(`Adding marker for ${league.name} at (${lat}, ${lng})`);
+           L.marker([lat, lng])
+             .addTo(map)
+             .bindPopup(`<b>${league.name}</b>`);
+         } else {
+           console.warn(`⚠️ Invalid coordinates for ${league.name}:`, league.latitude, league.longitude);
+         }
+       } else {
+         console.warn(`⚠️ Missing coordinates for ${league.name}`);
+       }
+    });    
+
+    leagues.forEach(function(league) {
+      if (league.latitude && league.longitude) {
+        console.log(`Adding marker for ${league.name} at (${league.latitude}, ${league.longitude})`);
+        L.marker([parseFloat(league.latitude), parseFloat(league.longitude)])
+          .addTo(map)
+          .bindPopup(`<b>${league.name}</b>`);
+      }
+    });
+  });
+</script>
+
+<!-- League Table -->
 <table class="table table-striped">
   <thead>
     <tr>

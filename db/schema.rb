@@ -10,13 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_18_021544) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_19_182849) do
   create_table "leagues", force: :cascade do |t|
     t.string "name"
     t.string "country"
     t.integer "num_teams"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "latitude"
+    t.float "longitude"
   end
 
   create_table "player_transfers", force: :cascade do |t|

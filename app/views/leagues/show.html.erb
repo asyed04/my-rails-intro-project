@@ -15,3 +15,21 @@
 
 <hr>
 <a href="<%= leagues_path %>" class="btn btn-primary">⬅ Back to Leagues</a>
+<h1><%= @league.name %></h1>
+<p><strong>Country:</strong> <%= @league.country %></p>
+
+<div id="map" style="height: 400px;"></div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var map = L.map('map').setView([<%= @league.latitude %>, <%= @league.longitude %>], 10);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    L.marker([<%= @league.latitude %>, <%= @league.longitude %>]).addTo(map)
+      .bindPopup("<%= @league.name %>")
+      .openPopup();
+  });
+</script>

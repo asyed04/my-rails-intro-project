@@ -22,11 +22,30 @@ Faker::UniqueGenerator.clear  # Reset unique tracking before generating data
 
 puts "🌍 Seeding Leagues from CSV..."
 CSV.foreach(Rails.root.join('db/leagues.csv'), headers: true) do |row|
-  League.create!(
-    name: row['name'],
-    country: row['country'],
-    num_teams: row['num_teams'].to_i
-  )
+    League.create!(
+        name: row['name'],
+        country: row['country'],
+        num_teams: row['num_teams'].to_i,
+        latitude: case row['name']
+          when "Premier League" then 51.509865
+          when "La Liga" then 40.416775
+          when "Bundesliga" then 52.520008
+          when "Serie A" then 41.902782
+          when "Ligue 1" then 48.856613
+          when "Eredivisie" then 52.3676
+          else Faker::Address.latitude
+          end,
+        longitude: case row['name']
+           when "Premier League" then -0.118092
+           when "La Liga" then -3.703790
+           when "Bundesliga" then 13.404954
+           when "Serie A" then 12.496366
+           when "Ligue 1" then 2.352222
+           when "Eredivisie" then 4.9041
+           else Faker::Address.longitude
+           end
+
+      )      
 end
 
 puts "🏆 Seeding Teams with Faker..."
