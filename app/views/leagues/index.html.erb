@@ -12,7 +12,7 @@
       <tr>
         <td><a href="<%= league_path(league) %>"><%= league.name %></a></td>
         <td><%= league.country %></td>
-        <td><%= league.num_teams %></td>
+        <td><%= league.teams.count %></td>
       </tr>
     <% end %>
   </tbody>

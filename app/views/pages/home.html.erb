@@ -1,16 +1,41 @@
-<h1>Welcome to the Football Stats App ⚽</h1>
-<p>Explore and analyze football leagues, teams, and players from around the world.</p>
+<div class="container mt-5">
+  <!-- Hero Section -->
+  <div class="jumbotron text-center bg-dark text-white p-5 rounded">
+    <h1 class="display-4">⚽ Welcome to My Rails Intro Project! ⚽</h1>
+    <p class="lead">Explore football leagues, teams, and players from around the world.</p>
+    <a href="<%= leagues_path %>" class="btn btn-primary btn-lg">Browse Leagues</a>
+    <a href="<%= teams_path %>" class="btn btn-secondary btn-lg">View Teams</a>
+  </div>
 
-<h2>Quick Stats 📊</h2>
-<ul>
-  <li><strong>Total Leagues:</strong> <%= League.count %></li>
-  <li><strong>Total Teams:</strong> <%= Team.count %></li>
-  <li><strong>Total Players:</strong> <%= Player.count %></li>
-</ul>
+  <!-- Featured Leagues -->
+  <div class="row mt-5">
+    <h2 class="text-center mb-4">Top Football Leagues</h2>
+    <% League.limit(3).each do |league| %>
+      <div class="col-md-4">
+        <div class="card shadow-sm">
+          <div class="card-body text-center">
+            <h5 class="card-title"><%= link_to league.name, league_path(league), class: "text-decoration-none text-dark" %></h5>
+            <p class="card-text"><strong>Country:</strong> <%= league.country %></p>
+            <a href="<%= league_path(league) %>" class="btn btn-outline-primary btn-sm">View League</a>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
 
-<h2>Explore</h2>
-<ul>
-  <li><a href="<%= leagues_path %>">View All Leagues</a></li>
-  <li><a href="<%= teams_path %>">View All Teams</a></li>
-  <li><a href="<%= players_path %>">View All Players</a></li>
-</ul>
+  <!-- Featured Players -->
+  <div class="row mt-5">
+    <h2 class="text-center mb-4">Top Players</h2>
+    <% Player.limit(3).each do |player| %>
+      <div class="col-md-4">
+        <div class="card shadow-sm">
+          <div class="card-body text-center">
+            <h5 class="card-title"><%= link_to player.name, player_path(player), class: "text-decoration-none text-dark" %></h5>
+            <p class="card-text"><strong>Position:</strong> <%= player.position %></p>
+            <a href="<%= player_path(player) %>" class="btn btn-outline-success btn-sm">View Player</a>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
