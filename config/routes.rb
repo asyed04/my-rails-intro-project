@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   # Resources for leagues, teams, and players
-  resources :leagues, only: [:index, :show]
-  resources :teams, only: [:index, :show]
-  resources :players, only: [:index, :show]
+  resources :leagues, only: [ :index, :show ]
+  resources :teams, only: [ :index, :show ]
+  resources :players, only: [ :index, :show ]
 end

@@ -70,7 +70,7 @@ Team.all.each do |team|
       position: player["strPosition"] || "Midfielder",
       nationality: player["strNationality"] || "Unknown",
       goals_scored: rand(0..50),
-      teams: [team]
+      teams: [ team ]
     )
     assigned_api_players << player["strPlayer"]
     break if assigned_api_players.length >= 5
@@ -85,20 +85,20 @@ Team.all.each do |team|
       Player.create!(
         name: player_name,
         age: rand(18..40),
-        position: ["Forward", "Midfielder", "Defender", "Goalkeeper"].sample,
+        position: [ "Forward", "Midfielder", "Defender", "Goalkeeper" ].sample,
         nationality: Faker::Nation.nationality,
         goals_scored: rand(0..50),
-        teams: [team]
+        teams: [ team ]
       )
     rescue Faker::UniqueGenerator::RetryLimitExceeded
       puts "⚠️ Faker ran out of unique player names, using fallback."
       Player.create!(
         name: "Generated Player #{rand(1000..9999)}",
         age: rand(18..40),
-        position: ["Forward", "Midfielder", "Defender", "Goalkeeper"].sample,
+        position: [ "Forward", "Midfielder", "Defender", "Goalkeeper" ].sample,
         nationality: "Unknown",
         goals_scored: rand(0..50),
-        teams: [team]
+        teams: [ team ]
       )
     end
   end
