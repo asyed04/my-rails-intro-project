@@ -26,16 +26,22 @@
 
 <!-- Player Cards -->
 <div class="row">
-  <% @players.each do |player| %>
-    <div class="col-md-4">
-      <div class="card mb-3 shadow-sm">
-        <div class="card-body">
-          <h5 class="card-title"><%= link_to player.name, player_path(player) %></h5>
-          <p class="card-text"><strong>Position:</strong> <%= player.position %></p>
-          <p class="card-text"><strong>Nationality:</strong> <%= player.nationality %></p>
-          <p class="card-text"><strong>Goals Scored:</strong> <%= player.goals_scored %></p>
+  <% if @players.any? %>
+    <% @players.each do |player| %>
+      <div class="col-md-4">
+        <div class="card mb-3 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title"><%= link_to player.name, player_path(player) %></h5>
+            <p class="card-text"><strong>Position:</strong> <%= player.position %></p>
+            <p class="card-text"><strong>Nationality:</strong> <%= player.nationality %></p>
+            <p class="card-text"><strong>Goals Scored:</strong> <%= player.goals_scored %></p>
+          </div>
         </div>
       </div>
+    <% end %>
+  <% else %>
+    <div class="text-center mt-4">
+      <p class="text-muted">No players found matching your search criteria.</p>
     </div>
   <% end %>
 </div>
